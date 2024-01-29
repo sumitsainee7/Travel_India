@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="leh">Leh Ladakh</string>
+    <string name="gokarna">Gokarna</string>
+    <string name="goa">Goa</string>
+    <string name="srinagar">Srinagar</string>
+    <string name="lakshadweep">Lakshadweep</string>
+    <string name="havelock_island">HaveLock Island</string>
+
+</resources>

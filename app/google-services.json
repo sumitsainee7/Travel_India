@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "789644131785",
+    "project_id": "travel-india-bdea9",
+    "storage_bucket": "travel-india-bdea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789644131785:android:075b44defac7fde48afc18",
+        "android_client_info": {
+          "package_name": "com.example.travelindiaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGO2nFLc0oBdD2zzPTymmHJKv0Gna-1WU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
