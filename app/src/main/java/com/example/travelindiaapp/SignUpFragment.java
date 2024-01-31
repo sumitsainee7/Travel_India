@@ -3,10 +3,14 @@ package com.example.travelindiaapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,15 +57,35 @@ public class SignUpFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false);
-    }
-    public void signIn(){
+        View view=inflater.inflate(R.layout.fragment_sign_up, container, false);
+        LinearLayout signInButton= (LinearLayout) view.findViewById(R.id.signInButton);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*MainActivity mainActivity=new MainActivity();
+                mainActivity.loadFragment(new HomeFragment(),0);*/
+                Toast.makeText(getActivity(), "Sign In SuccessFull", Toast.LENGTH_SHORT).show();
+                Constant constant=new Constant();
+                constant.signIn=true;
 
+                // Fragment Manager
+                FragmentManager fm2= getParentFragmentManager();
+                FragmentTransaction ft2= fm2.beginTransaction();
+                fm2.popBackStack();
+                ft2.add(R.id.container,new HomeFragment(),"root fragment");
+                fm2.popBackStack("root fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                //ft2.addToBackStack("root fragment");
+                ft2.commit();
+            }
+        });
+        return view;
     }
+
 }

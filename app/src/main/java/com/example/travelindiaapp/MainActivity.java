@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,17 +21,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.Constants;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    int signIn=0;
+    ConnectionChangeBroadcastReceiver connectionChangeBroadcastReceiver=new ConnectionChangeBroadcastReceiver();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // get notification for general topics
         FirebaseMessaging.getInstance().subscribeToTopic("general")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -48,38 +50,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Button Declared
-        ImageButton btnFragHome,btnFragProfile,btnFrag;
+        ImageButton btnFragHome,btnFragProfile,btnFragContactUs;
 
         // Button initiation
         btnFragProfile=findViewById(R.id.btnFragProfile);
         btnFragHome=findViewById(R.id.btnFragHome);
-        btnFrag=findViewById(R.id.btnFrag);
+        btnFragContactUs=findViewById(R.id.btnFragContactUs);
 
+        // Fragment Manager
         loadFragment(new HomeFragment(),0);
-
         btnFragHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(new HomeFragment(),1);
+                loadFragment(new HomeFragment(),0);
 
             }
         });
         btnFragProfile.setOnClickListener(new View.OnClickListener() {
+            Constant constant=new Constant();
             @Override
             public void onClick(View v) {
-                if (signIn == 0) {
-                    loadFragment(new SignUpFragment(),1);
+                if (constant.signIn) {
+                    loadFragment(new ProfileFragment(),1);
                 }
                 else{
-                    loadFragment(new ProfileFragment(),1);
+                    loadFragment(new SignUpFragment(),1);
                 }
 
             }
         });
-        btnFrag.setOnClickListener(new View.OnClickListener() {
+        btnFragContactUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loadFragment(new ContactUsFragment(),1);
             }
         });
     }
@@ -90,12 +93,34 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(flag==0){
-            ft.add(R.id.container,fragment);
+            ft.replace(R.id.container,fragment,"root fragment");
+            fm.popBackStack("root fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         }
         else{
-            ft.replace(R.id.container,fragment);
+            ft.replace(R.id.container,fragment,"replacement");
+            ft.addToBackStack("replacement");
         }
+
         ft.commit();
+
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter=new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionChangeBroadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(connectionChangeBroadcastReceiver);
+    }
+
+    public void signInToast() {
+        Toast.makeText(MainActivity.this, "Sign In SuccessFull", Toast.LENGTH_SHORT).show();
+    }
 }

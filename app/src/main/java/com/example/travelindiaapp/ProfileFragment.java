@@ -3,10 +3,14 @@ package com.example.travelindiaapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,25 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view= inflater.inflate(R.layout.fragment_profile, container, false);
+        Button signOutButton= (Button) view.findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constant constant=new Constant();
+                constant.signIn=false;
+                Toast.makeText(getActivity(), "Sign Out SuccessFull", Toast.LENGTH_SHORT).show();
+                // Fragment Manager
+
+                FragmentManager fm3= getParentFragmentManager();
+                FragmentTransaction ft3= fm3.beginTransaction();
+                fm3.popBackStack();
+                ft3.add(R.id.container,new HomeFragment(),"root fragment");
+                fm3.popBackStack("root fragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                //ft3.addToBackStack("root fragment");
+                ft3.commit();
+            }
+        });
+        return view;
     }
 }
